@@ -4,15 +4,10 @@
 
 segment .date
 	msg1 dd "Please input the first number :",0
-	msg2 dd "Please input the second number :",0
-	msg3 dd "Please input the third number :",0
-	msg4 db "The result is: ",0
 	nextline db 0x0d,0x0a,0
 
 segment .bss
 	a	resd	1
-	b	resd	1
-	c	resd	1
 	re resd 1
 
 segment .text
@@ -24,27 +19,11 @@ main:
 		call print_string
 		call read_int 
 			mov [a],EAX
-; Input the second number
-		mov EAX,msg2
-		call print_string
-		call read_int
-			mov [b],EAX
-; Input the third number
-		mov EAX,msg3
-		call print_string
-		call read_int
-			mov [c],EAX
 ; Subtract three numbers
 		mov AX,[a]
-		sub AX,[b]
-		sub AX,[c]
 		mov [re],AX
 		
-		mov EAX,msg4
-		call print_string
-		mov EAX,[re]
-		call print_int
-
+; go to next line
 		mov EAX,nextline
 		call print_string
 		
