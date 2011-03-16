@@ -1,4 +1,4 @@
-program = init
+program = main
 
 $(program):$(program).o $(program).lst
 	#ld -s -o $(program) $(program).o io.o
