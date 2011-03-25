@@ -1,6 +1,7 @@
 ; test.asm 
 ;%include "io.mac"
-%include "asm_io.inc"
+;%include "asm_io.inc"
+%include "myio.inc"
 
 segment .date
 	msg1 dd "Please input the first number :",0
@@ -30,7 +31,4 @@ main:
 		dump_regs 1
 
 ;exit progrem
-mov    EAX,1
-xor    EBX,EBX
-int    0x80
-
+myexit
