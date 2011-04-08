@@ -3,7 +3,7 @@
 ;%include "asm_io.inc"
 %include "myio.asm"
 
-segment .date
+segment .date write
 	msg1 db "@-----set the zero flag-----",10,0
 	msg1_len equ $-msg1
 	nextline db 0x0d,0x0a,0
