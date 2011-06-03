@@ -22,7 +22,10 @@ $(program)_$(debug).o:$(program).asm myio.asm
 
 debug:$(debug)
 
-clean:
-	rm -rf $(program).o *.lst $(program) $(debug)
+partial_clean:
+	rm -rf $(program).o *.lst $(debug)
 
-.PHONY: clean debug
+clean: partial_clean
+	rm -rf $(program)
+
+.PHONY: clean debug partial_clean

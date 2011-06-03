@@ -149,7 +149,7 @@ segment .text
 ; make the functions global as the shared library functions
 ; --------------------------------------------------------
 
-global Absi:function, Clrscr:function, Crlf:function, Delay:function, DumpMem:function, DumpRegs:function, GCD:function, Gotoxy:function, GetDateTime:function, GetMseconds:function, IsDigit:function, ParseDecimal32:function, ParseInteger32:function, Random32:function, Randomize:function, RandomRange:function, ReadChar:function, ReadDec:function, ReadHex:function, ReadInt:function, ReadKey:function, ReadString:function,  Str_compare:function, Str_copy:function, Str_length:function, Str_trim:function, Str_ucase:function, WriteBin:function, WriteBinB:function, WriteChar:function, WriteDec:function, WriteHex:function, WriteHexB:function, WriteInt:function, WriteString:function
+global Absi:function, Clrscr:function, Crlf:function, Delay:function, DumpMem:function, DumpRegs:function, GCD:function, Gotoxy:function, GetDateTime:function, GetMseconds:function, IsDigit:function, ParseDecimal32:function, ParseInteger32:function, Random32:function, Randomize:function, RandomRange:function, ReadChar:function, ReadDec:function, ReadHex:function, ReadInt:function, ReadKey:function, ReadString:function,  Str_compare:function, Str_copy:function, Str_Ncopy:function, Str_length:function, Str_trim:function, Str_ucase:function, WriteBin:function, WriteBinB:function, WriteChar:function, WriteDec:function, WriteHex:function, WriteHexB:function, WriteInt:function, WriteString:function
 ;----------------------------------------------------------
 
 ;-----------------------------------------------------
@@ -785,6 +785,49 @@ Str_copy:
 	leave
 	ret
 ;--------------- End of Str_copy -----------------------
+
+;---------------------------------------------------------
+Str_Ncopy:
+;
+; Copy a string from source to target by a specified number of bytes.
+; push target string address
+; push source string address
+; push number of bytes you want to copy
+; remember to "add esp,12" after calling
+;----------------------------------------------------------
+	push ebp
+	mov ebp,esp
+	push esi
+	push edi
+	push ecx
+
+	mov esi,[ebp + 16] ; target address
+	mov edi,[ebp + 12] ; source address
+	mov ecx,[ebp + 8] ; maximum count
+
+	push esi
+	call Str_length
+	add esp,4
+
+	cmp eax,ecx
+	;.IF eax > ecx
+	jg .L_n_cpy
+	;.ELSE ecx = eax
+		mov ecx,eax
+		
+	.L_n_cpy:
+		mov al,byte [edi]
+		mov byte [esi],al
+		add esi,1
+		add edi,1
+	loop .L_n_cpy
+
+	pop ecx
+	pop edi
+	pop esi
+	pop ebp
+	ret
+;--------------- End of Str_Ncopy -----------------------
 
 ;-----------------------------------------------------------
 Str_trim:

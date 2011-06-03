@@ -31,6 +31,7 @@
 ; GCD : calculate the greatest common Divisor
 ; Gotoxy : Locate the cursor
 ; GetDateTime : get current date and time since the Epoch in seconds
+; extern GetMseconds
 ; IsDigit : Determines whether the character in AL is a valid decimal digit.
 ; DumpMem : Writes a range of memory to standard output in hexadecimal.
 ; ParseDecimal32: convert the number string to a decimal number
@@ -39,6 +40,7 @@
 ; Str_compare : Compare two strings.
 ; Str_trim : Remove all occurences of a given character from the end of a string.
 ; Str_ucase : Convert a null-terminated string to upper case.
+; extern Str_Ncopy
 ; BufferFlush: flush the buffer and reset the related variables
 ; Random32 : Generates an unsigned pseudo-random 32-bit integer
 ; Randomize : Re-seeds the random number generator with the current time in seconds.
@@ -85,6 +87,7 @@ extern ReadKey
 extern ReadString
 extern Str_compare
 extern Str_copy
+extern Str_Ncopy
 extern Str_length
 extern Str_trim
 extern Str_ucase
