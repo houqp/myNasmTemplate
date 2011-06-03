@@ -28,7 +28,9 @@
 ; Clrscr : Writes a carriage return / linefeed
 ; Crlf : output a new line
 ; Delay : Delay certain microseconds
+; GCD : calculate the greatest common Divisor
 ; Gotoxy : Locate the cursor
+; GetDateTime : get current date and time since the Epoch in seconds
 ; IsDigit : Determines whether the character in AL is a valid decimal digit.
 ; DumpMem : Writes a range of memory to standard output in hexadecimal.
 ; ParseDecimal32: convert the number string to a decimal number
@@ -59,12 +61,16 @@
 ; ------------------------------------------
 ; function prototypes
 ; ------------------------------------------
+extern Absi
 extern Clrscr
 extern Crlf
 extern Delay
 extern DumpMem
 extern DumpRegs
+extern GCD
 extern Gotoxy
+extern GetDateTime
+extern GetMseconds
 extern IsDigit
 extern ParseDecimal32
 extern ParseInteger32

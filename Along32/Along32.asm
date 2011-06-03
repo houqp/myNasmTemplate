@@ -30,10 +30,14 @@
 ;
 ; Function Prototypes
 ; -------------- global functions ------------
+; Absi : trun an int into its absolute value
 ; Clrscr : Writes a carriage return / linefeed
 ; Crlf : output a new line
 ; Delay : Delay certain microseconds
+; GCD : calculate the greatest common Divisor
 ; Gotoxy : Locate the cursor
+; GetMseconds : get current system time
+; GetDateTime : get current date and time since the Epoch in seconds
 ; IsDigit : Determines whether the character in AL is a valid decimal digit.
 ; DumpMem : Writes a range of memory to standard output in hexadecimal.
 ; ParseDecimal32: convert the number string to a decimal number
@@ -145,8 +149,26 @@ segment .text
 ; make the functions global as the shared library functions
 ; --------------------------------------------------------
 
-global Clrscr:function, Crlf:function, Delay:function, DumpMem:function, DumpRegs:function, Gotoxy:function, IsDigit:function, ParseDecimal32:function, ParseInteger32:function, Random32:function, Randomize:function, RandomRange:function, ReadChar:function, ReadDec:function, ReadHex:function, ReadInt:function, ReadKey:function, ReadString:function,  Str_compare:function, Str_copy:function, Str_length:function, Str_trim:function, Str_ucase:function, WriteBin:function, WriteBinB:function, WriteChar:function, WriteDec:function, WriteHex:function, WriteHexB:function, WriteInt:function, WriteString:function
+global Absi:function, Clrscr:function, Crlf:function, Delay:function, DumpMem:function, DumpRegs:function, GCD:function, Gotoxy:function, GetDateTime:function, GetMseconds:function, IsDigit:function, ParseDecimal32:function, ParseInteger32:function, Random32:function, Randomize:function, RandomRange:function, ReadChar:function, ReadDec:function, ReadHex:function, ReadInt:function, ReadKey:function, ReadString:function,  Str_compare:function, Str_copy:function, Str_length:function, Str_trim:function, Str_ucase:function, WriteBin:function, WriteBinB:function, WriteChar:function, WriteDec:function, WriteHex:function, WriteHexB:function, WriteInt:function, WriteString:function
 ;----------------------------------------------------------
+
+;-----------------------------------------------------
+Absi:
+;
+; Check whether the value in eax is below zero
+; If it is, neg eax
+;-----------------------------------------------------
+	pushfd 
+
+	cmp eax,0
+	jge .L1
+	neg eax
+
+	.L1:
+
+	popfd
+	ret
+;--------------- End of Abs -----------------------
 
 ;-----------------------------------------------------
 Clrscr:
@@ -206,6 +228,37 @@ Delay:
 ;--------------- End of Delay -------------------------
 
 ;--------------------------------------------------------
+GCD:
+;
+; Receives: EAX = first integer, EBX = second integer
+; Returns: EAX = Greatest Common Divisor
+;--------------------------------------------------------
+	push ecx
+	push edx
+
+	push eax
+	mov eax,ebx
+	call Absi
+	mov ebx,eax
+	pop eax
+	call Absi
+
+	.L1:
+		mov ecx,2
+		xor edx,edx
+		div ebx
+		mov eax,ebx
+		mov ebx,edx
+		cmp edx,0
+		loopnz .L1
+
+	pop ecx
+	pop edx
+	ret
+;--------------- End of GCD -------------------------
+
+
+;--------------------------------------------------------
 Gotoxy:
 ;
 ; Locate the cursor
@@ -229,6 +282,43 @@ segment .text
 	pop eax
 	ret
 ;--------------- End of Gotoxy -------------------------
+
+;--------------------------------------------------------
+GetDateTime:
+;
+; Receives: EBX = address of doubleword variable to store the time
+; Returns:	EAX = seconds elapsed since the Epoch 
+;						The seconds will also be stored into passed-in variable
+;--------------------------------------------------------
+	
+	mov eax,13
+	int 0x80
+
+	ret
+;--------------- End of GetDateTime -------------------------
+
+;--------------------------------------------------------
+GetMseconds:
+;
+; Returns:	EAX = seconds part of time elapsed since the Epoch 
+;						EBX = mseconds part of time elapsed since the Epoch
+;--------------------------------------------------------
+segment .data
+time_val dw 0,
+				 dw 0,
+				 dw 0
+
+segment .text
+	mov ebx,time_val
+	mov ecx,0
+	mov eax,78
+	int 0x80
+
+	mov eax,[time_val]
+	mov ebx,[time_val+4]
+
+	ret
+;--------------- End of GetMseconds -------------------------
 
 ;-----------------------------------------------
 IsDigit:

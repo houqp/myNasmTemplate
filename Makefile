@@ -1,12 +1,11 @@
 program = main
 debug = dbg
-.PHONY: clean debug
+LDFLAGS += -lc
+CFLAGS = -L./Along32
 
-$(program):$(program).o $(program).lst
-	#ld -s -o $(program) $(program).o io.o
-	#ld -m elf_i386 -o $(program) $(program).o io.o asm_io.o
-	gcc -m32 $(program).o asm_io.o -o $(program)
-	#ld -m elf_i386 -o $(program) $(program).o 
+$(program):$(program).o ./Along32/Along32.o
+	#gcc -m32 $(program).o asm_io.o -o $(program)
+	ld -m elf_i386 $(LDFLAGS) --dynamic-linker /lib/ld-linux.so.2 -o $(program) $(program).o ./Along32/Along32.o
 
 $(program).lst $(program).o:$(program).asm myio.asm
 	nasm -f elf32 $(program).asm -l $(program).lst
@@ -18,7 +17,12 @@ $(debug):$(program)_$(debug).o
 $(program)_$(debug).o:$(program).asm myio.asm
 	nasm -g -f elf32 $(program).asm -l $(program).lst
 
+./Along32/Along32.o: ./Along32/Along32.asm
+	cd ./Along32/ && make
+
 debug:$(debug)
 
 clean:
-	rm $(program).o *.lst $(program) $(debug)
+	rm -rf $(program).o *.lst $(program) $(debug)
+
+.PHONY: clean debug
