@@ -79,6 +79,7 @@
 %endrep
 call %1
 %if (%0!=1)
+; modified by houqp to handle flags saving
         ;save flags before adding
         pushfd
         add esp, byte %{1}_arglen + 4

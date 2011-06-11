@@ -40,17 +40,6 @@
 	popad
 %endmacro
 
-;%macro do_repeat 1
-	;push ecx
-	;mov ecx,%1
-	;L100:
-;%endmacro
-
-;%macro end_repeat 0
-	;loop L100
-	;pop ecx
-;%endmacro
-
 %macro my_exit 0
 	mov    EAX,1
 	xor    EBX,EBX
@@ -59,6 +48,7 @@
 
 ;swap two arguments
 ;arguments should be memory addresses
+; usage: invoke _swap arg1,arg2
 proc _swap
 	.arg1 arg 4	
 	.arg2 arg 4	

@@ -1,4 +1,9 @@
-; test.asm 
+;@==========================================================
+;@
+;@ houqp's nasm program template 
+;@
+;@==========================================================
+
 ;%include "io.mac"
 ;%include "asm_io.inc"
 %include "myio.asm"
@@ -11,7 +16,6 @@ segment .data
 
 segment .bss
 	l1_count	resd	1
-	ran_str resb 11
 
 segment .text
 	global _start

@@ -1,5 +1,6 @@
 program = main
 debug = dbg
+include = myc32.mac myio.asm Along32.inc 
 LDFLAGS += -lc
 CFLAGS = -L./Along32
 
@@ -7,7 +8,7 @@ $(program):$(program).o ./Along32/Along32.o
 	#gcc -m32 $(program).o asm_io.o -o $(program)
 	ld -m elf_i386 $(LDFLAGS) --dynamic-linker /lib/ld-linux.so.2 -o $(program) $(program).o ./Along32/Along32.o
 
-$(program).lst $(program).o:$(program).asm myio.asm
+$(program).lst $(program).o:$(program).asm $(include)
 	nasm -f elf32 $(program).asm -l $(program).lst
 	#yasm -f elf32 $(program).asm -l $(program).lst
 
